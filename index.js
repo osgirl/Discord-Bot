@@ -1,6 +1,5 @@
 const botconfig = require("./botconfig.json");
 const Discord = require("discord.js");
-
 const bot = new Discord.Client({disableEveryone: true});
 
 bot.on("ready", async () => {
@@ -9,20 +8,19 @@ bot.on("ready", async () => {
 });
 
 bot.on("message", async message => {
-    if (message.content === "ping")
-    await message.reply("pong");
-});
+    if(message.author.bot) return;
+    if(message.channel.type === "dm") return;
 
-bot.on("message", async message => {
-  if(message.author.bot) return;
-  if(message.channel.type === "dm") return;
-
-  let prefix = botconfig.prefix;
-  let messageArray = message.content.split(" ");
-  let cmd = messageArray[0];
-  let args = messageArray.slice(1);
-
-  if(cmd === `${prefix}report`){
+    let prefix = botconfig.prefix;
+    let messageArray = message.content.split(" ");
+    let cmd = messageArray[0];
+    let args = messageArray.slice(1);
+// hello
+    if(cmd === `${prefix}hello`){
+    return message.channel.send("Hey There!:grin:");
+}
+// report
+if(cmd === `${prefix}report`){
 
     let rUser = message.guild.member(message.mentions.users.first()  || message.guild.members.get(args[0]));
     if(!rUser) return message.channel.send("Couldn't find user.");
@@ -40,37 +38,34 @@ bot.on("message", async message => {
     reportschannel.send(reportEmbed);
   }
 
-if(cmd === `${prefix}serverinfo`){
-
- let sicon = message.guild.iconURL;
- let serverembed  = new Discord.RichEmbed()
- .setDescription("Server Information")
- .setColor("#15f153")
- .setThumbnail(sicon)
- .addField("Server Name", message.guild.name)
- .addField("Created On", message.guild.createdAt)
- .addField("You Joined", message.member.joinedAt)
- .addField("Total Members", message.guild.memberCount);
-
-  return message.channel.send(serverembed);
+//test
+    if(cmd === `${prefix}test`){
+    return message.channel.send("Testing Done! Bot is working fine.:sunglasses:");
 }
 
-  if(cmd ===`${prefix}botinfo`){
-
-  let bicon = bot.user.displayAvatarURL;
-  let botembed = new Discord.RichEmbed()
+//botinfo
+   if(cmd === `${prefix}botinfo`){
+   let bicon = bot.user.displayAvatarURL;
+   let botembed = new Discord.RichEmbed()
   .setDescription("Bot Information")
-  .setColor("#15f153")
+  .setColor("#7fe81e")
   .setThumbnail(bicon)
   .addField("Bot Name", bot.user.username)
-  .addField("Created On", bot.user.createdAt);
-
-  return message.channel.send(botembed);
-  }
-
-  if(cmd === `${prefix}hello`){
-  return message.channel.send("Hello!");
-  }
+  .addField("Created At", bot.user.createdAt)
+   return message.channel.send(botembed);
+}
+//serverinfo
+   if(cmd === `${prefix}serverinfo`){
+   let sicon = message.guild.iconURL;
+  let serverembed = new Discord.RichEmbed()
+  .setDescription("Server Information")
+  .setColor("#e0d318")
+  .setThumbnail(sicon)
+  .addField("Server Name", message.guild.name)
+  .addField("Created At", message.guild.createdAt)
+  .addField("You Joined", message.member.joinedAt)
+  .addField("Total Members", message.guild.memberCount);
+   return message.channel.send(serverembed)
+}
 });
-
 bot.login(botconfig.token);

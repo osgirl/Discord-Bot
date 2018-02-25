@@ -68,4 +68,4 @@ if(cmd === `${prefix}report`){
    return message.channel.send(serverembed)
 }
 });
-bot.login(process.env.BOT_TOKEN;
+bot.login(process.env.BOT_TOKEN);
